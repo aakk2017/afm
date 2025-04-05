@@ -7,7 +7,30 @@
     <link rel="stylesheet" href="afm.css">
 </head>
 <body>
-    
+    <div class="container">
+        <div class="left-column">
+            <div class="input-area">
+                <div class="input-container">
+                    <input 
+                    type="file" 
+                    id="open-file" 
+                    name="open-file" 
+                    onchange="viewFile()" />
+                </div>
+            </div>
+            <div class="image-area">
+                <div class="image-panel">
+                    <div class="tab-area">
+                        <div class="tab" id="height-tab" on-view>Height</div>
+                        <div class="tab" id="error-tab">Amplitude Error</div>
+                        <div class="tab" id="phase-tab">Phase</div>
+                    </div>
+                    <div class="image-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="right-column"></div>
+    </div>
     <script src="afm.js"></script>
 </body>
 </html>
