@@ -25,18 +25,18 @@ body {
     width: 177vh;
     display: flex;
     margin: 0 auto;
-    background-color: aqua;
+    background-color: antiquewhite;
 }
 
 .left-column {
     height: 100vh;
     width: 90vh;
-    background-color: bisque;
+    /* background-color: bisque; */
 }
 .input-area {
     height: 6vh;
     display: flex;
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
 }
 .input-container {
     height: 4vh;
@@ -46,7 +46,7 @@ body {
 .image-area {
     height: 94vh;
     display: flex;
-    background-color: darkgoldenrod;
+    /* background-color: darkgoldenrod; */
 }
 .image-panel {
     height: 93vh;
@@ -56,13 +56,13 @@ body {
 .tab-area {
     height: var(--tab-area-height);
     display: flex;
-    background-color: indianred;
+    /* background-color: indianred; */
 }
 .tab {
     height: var(--tab-area-height);
     width: 29vh;
     box-sizing: border-box;
-    background-color: khaki;
+    background-color: silver;
     border: 1px solid black;
     border-radius: 1vh 1vh 0 0;
     text-align: center;
@@ -97,7 +97,7 @@ body {
 .right-column {
     height: 100vh;
     width: 87vh;
-    background-color: fuchsia;
+    /* background-color: fuchsia; */
 }
 .info-area {
     height: 5vh;

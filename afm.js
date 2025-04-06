@@ -13,8 +13,8 @@ const phaseTab = document.getElementById("phase-tab");
 const tabs = [heightTab, errorTab, phaseTab];
 const dataArea = document.getElementById("data");
 
-tabs.forEach((element) => {
-    element.addEventListener("click", (e) => {handleClickOnTab(e);});
+tabs.forEach((element, i, t) => {
+    t[i].addEventListener("click", (e) => {handleClickOnTab(e);});
 });
 
 function initializePage() {
