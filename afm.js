@@ -6,6 +6,7 @@ let info = {};
 let imageInfo = [];
 let dataText = "";
 let data = [];
+let loaded = false;
 
 let zSens = 0;
 let zScale = 3.75 / 32768;
@@ -17,11 +18,35 @@ const tabs = [heightTab, errorTab, phaseTab];
 const dataArea = document.getElementById("data");
 const infoP = document.getElementById("p-info");
 
+function handleClickOnTab(e) {
+    let targetView = onView;
+    switch(e.target.id) {
+        case "height-tab":
+            targetView = 0;
+            break;
+        case "error-tab":
+            targetView = 1;
+            break;
+        case "phase-tab":
+            targetView = 2;
+            break;
+    }
+    if(targetView !== onView) {
+        tabs[onView].removeAttribute("on-view");
+        onView = targetView;
+        tabs[onView].setAttribute("on-view", "");
+        if(loaded) {
+            plotImage();
+        }
+    }
+}
+
 tabs.forEach((element, i, t) => {
-    t[i].addEventListener("click", (e) => {handleClickOnTab(e);});
+    t[i].onclick = handleClickOnTab;
 });
 
 function initializePage() {
+    loaded = false;
     info = {};
     imageInfo = [];
     dataText = "";
@@ -93,6 +118,7 @@ function readAfm(file) {
         parseData(rawData);
         plotImage();
         printData();
+        loaded = true;
     });
     if(file) {
         reader.readAsArrayBuffer(file);
@@ -107,7 +133,9 @@ function viewFile(){
 
 function plotImage() {
     const afmImage = document.getElementById("afm-image");
-    const ctx = afmImage.getContext("2d");
+    const ctx = afmImage.getContext("2d", {
+        "willReadFrequently": true
+    });
     afmImage.width = imageInfo[0]["Samps/line"];
     afmImage.height = imageInfo[0]["Number of lines"];
     const imageData = ctx.getImageData(0, 0, afmImage.width, afmImage.height);
@@ -131,23 +159,3 @@ function printData() {
     dataArea.innerHTML = dataText;
 }
 
-function handleClickOnTab(e) {
-    let targetView = onView;
-    switch(e.target.id) {
-        case "height-tab":
-            targetView = 0;
-            return;
-        case "error-tab":
-            targetView = 1;
-            return;
-        case "phase-tab":
-            targetView = 2;
-            return;
-    }
-    if(targetView !== onView) {
-        tabs[onView].removeAttribute("on-view");
-        onView = targetView;
-        tabs[onView].setAttribute("on-view");
-        plotImage();
-    }
-}
