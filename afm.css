@@ -13,6 +13,7 @@
 /* define key colors */
 :root {
     --image-panel-color: #eee;
+    --tab-area-height: 2.5vh;
 }
 
 body {
@@ -53,19 +54,20 @@ body {
     margin: auto;
 }
 .tab-area {
-    height: 4vh;
+    height: var(--tab-area-height);
     display: flex;
     background-color: indianred;
 }
 .tab {
-    height: 4vh;
+    height: var(--tab-area-height);
     width: 29vh;
     box-sizing: border-box;
     background-color: khaki;
     border: 1px solid black;
     border-radius: 1vh 1vh 0 0;
     text-align: center;
-    font-size: 3vh;
+    font-size: 2vh;
+    user-select: none;
 }
 #error-tab {
     border-left: 1px solid black;
@@ -84,10 +86,32 @@ body {
     border-top: 0;
     border-radius: 0 0 1vh 1vh;
 }
+.afm-image {
+    opacity: 0;
+    transition: all 0.3s;
+}
+.afm-image[on-view] {
+    opacity: 1;
+}
 
 .right-column {
     height: 100vh;
     width: 87vh;
     background-color: fuchsia;
+}
+.info-area {
+    height: 5vh;
+}
+.toolbar {
+    height: 5vh;
+}
+.text-area-container {
+    height: 90vh;
+    display: flex;
+}
+#data {
+    width: 85vh;
+    height: 88vh;
+    margin: auto;
 }
 

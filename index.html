@@ -25,11 +25,19 @@
                         <div class="tab" id="error-tab">Amplitude Error</div>
                         <div class="tab" id="phase-tab">Phase</div>
                     </div>
-                    <div class="image-container"></div>
+                    <div class="image-container">
+                        <canvas class="afm-image" id="afm-image"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="right-column"></div>
+        <div class="right-column">
+            <div class="info-area"></div>
+            <div class="toolbar"></div>
+            <div class="text-area-container">
+                <textarea name="data" id="data"></textarea>
+            </div>
+        </div>
     </div>
     <script src="afm.js"></script>
 </body>
