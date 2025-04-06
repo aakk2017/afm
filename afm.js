@@ -7,11 +7,15 @@ let imageInfo = [];
 let dataText = "";
 let data = [];
 
+let zSens = 0;
+let zScale = 3.75 / 32768;
+
 const heightTab = document.getElementById("height-tab");
 const errorTab = document.getElementById("error-tab");
 const phaseTab = document.getElementById("phase-tab");
 const tabs = [heightTab, errorTab, phaseTab];
 const dataArea = document.getElementById("data");
+const infoP = document.getElementById("p-info");
 
 tabs.forEach((element, i, t) => {
     t[i].addEventListener("click", (e) => {handleClickOnTab(e);});
@@ -23,6 +27,7 @@ function initializePage() {
     dataText = "";
     dataArea.innerHTML = "";
     data = [];
+    infoP.innerHTML = "";
 }
 
 function parseHeader(header) {
@@ -58,6 +63,9 @@ function parseHeader(header) {
             }
         }
     });
+    infoP.innerHTML = "Scan size: " + imageInfo[0]["Scan Size"];
+    zSens = parseFloat(info["Scanner list"]["@Sens. Zsens"].split(" ")[1]);
+    infoP.innerHTML += "\nZ sense: " + zSens + " nm/V";
 }
 
 function parseData(rawData) {
@@ -116,7 +124,7 @@ function printData() {
     for(let y = 0; y < h; y++) {
         for(let x = 0; x < w; x++) {
             let index = y * w + x;
-            let lineText = "" + data[0][index] + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
+            let lineText = "" + (data[0][index]*zSens*zScale) + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
             dataText += lineText;
         }
     }
