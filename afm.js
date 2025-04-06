@@ -10,7 +10,6 @@ let data = [];
 const heightTab = document.getElementById("height-tab");
 const errorTab = document.getElementById("error-tab");
 const phaseTab = document.getElementById("phase-tab");
-const afmImage = document.getElementById("afm-image");
 const tabs = [heightTab, errorTab, phaseTab];
 const dataArea = document.getElementById("data");
 
@@ -84,6 +83,7 @@ function readAfm(file) {
         parseHeader(header);
         const rawData = reader.result.slice(40960, length);
         parseData(rawData);
+        plotImage();
         printData();
     });
     if(file) {
@@ -98,10 +98,29 @@ function viewFile(){
 }
 
 function plotImage() {
-
+    const afmImage = document.getElementById("afm-image");
+    const ctx = afmImage.getContext("2d");
+    afmImage.width = imageInfo[0]["Samps/line"];
+    afmImage.height = imageInfo[0]["Number of lines"];
+    const imageData = ctx.getImageData(0, 0, afmImage.width, afmImage.height);
+    const imageColors = imageData.data;
+    imageColors.forEach((p, i, c) => {
+        c[i] = 255;
+    });
+    ctx.putImageData(imageData, 0, 0);
 }
 function printData() {
-
+    dataText = "Z\tError\tPhase\tX\tY\n";
+    const w = imageInfo[0]["Samps/line"];
+    const h = imageInfo[0]["Number of lines"];
+    for(let y = 0; y < h; y++) {
+        for(let x = 0; x < w; x++) {
+            let index = y * w + x;
+            let lineText = "" + data[0][index] + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
+            dataText += lineText;
+        }
+    }
+    dataArea.innerHTML = dataText;
 }
 
 function handleClickOnTab(e) {
