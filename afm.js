@@ -6,6 +6,7 @@ let info = {};
 let imageInfo = [];
 let dataText = "";
 let data = [];
+let dataRanges = [[0, 0], [0, 0], [0, 0]];
 
 let zSens = 0;
 let zScale = 3.75 / 32768;
@@ -27,6 +28,7 @@ function initializePage() {
     dataText = "";
     dataArea.innerHTML = "";
     data = [];
+    dataRanges = [[0, 0], [0, 0], [0, 0]];
     infoP.innerHTML = "";
 }
 
@@ -65,7 +67,7 @@ function parseHeader(header) {
     });
     infoP.innerHTML = "Scan size: " + imageInfo[0]["Scan Size"];
     zSens = parseFloat(info["Scanner list"]["@Sens. Zsens"].split(" ")[1]);
-    infoP.innerHTML += "\nZ sense: " + zSens + " nm/V";
+    infoP.innerHTML += "\r\nZ sense: " + zSens + " nm/V";
 }
 
 function parseData(rawData) {
@@ -81,6 +83,17 @@ function parseData(rawData) {
     if(intData.length >= singleImagePts * 3) {
         data.push(intData.slice(singleImagePts * 2, singleImagePts * 3));
     }
+    for(let i = 0; i < singleImagePts; i++) {
+        for(let j = 0; j < 3; j++) {
+            if(Number(data[j][i]) > dataRanges[j][1]) {
+                dataRanges[j][1] = Number(data[j][i]);
+            }
+            if(Number(data[j][i]) < dataRanges[j][0]) {
+                dataRanges[j][0] = Number(data[j][i]);
+            }
+        }
+    }
+    infoP.innerHTML += "\r\nZ range: " + dataRanges[0][0] + " " + dataRanges[0][1];
 }
 
 function readAfm(file) {
@@ -124,7 +137,7 @@ function printData() {
     for(let y = 0; y < h; y++) {
         for(let x = 0; x < w; x++) {
             let index = y * w + x;
-            let lineText = "" + (data[0][index]*zSens*zScale) + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
+            let lineText = "" + (data[0][index]) + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
             dataText += lineText;
         }
     }
