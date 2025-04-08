@@ -110,8 +110,8 @@ function parseHeader(header) {
         sizeY = parseFloat(imageInfo[0]["Scan size"].split(" ")[1]);
         unit = imageInfo[0]["Scan size"].split(" ")[2];
     }
-    zScale = parseFloat(imageInfo[0]["@2:Z scale"].split(" ")[5]);
-    errorScale = parseFloat(imageInfo[1]["@2:Z scale"].split(" ")[5]);
+    zScale = parseFloat(imageInfo[0]["@2:Z scale"].split(") ")[1].split(" ")[0]);
+    errorScale = parseFloat(imageInfo[1]["@2:Z scale"].split(") ")[1].split(" ")[0]);
     let zSenseParamName = "@" + imageInfo[0]["@2:Z scale"].split("[")[1].split("]")[0];
     for(const params in info) {
         if(info[params][zSenseParamName]) {
