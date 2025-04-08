@@ -1,6 +1,8 @@
 
 // created: 2025/04/04 4pm
 
+// const { param } = require("express/lib/request");
+
 let onView = 0; // 0 is height, 1 is amplitude error, 2 is phase
 let info = {};
 let imageInfo = [];
@@ -9,8 +11,17 @@ let data = [];
 let dataRanges = [[0, 0], [0, 0], [0, 0]];
 let loaded = false;
 
-let zSens = 0;
-let zScale = 3.75 / 32768;
+let zSense = 0;
+let zScale = 0;
+let zRange = 32767;
+let errorSense = 0;
+let errorScale = 0;
+let errorRange = 32767;
+let sizeX = 10;
+let sizeY = 10;
+let unit = "~m";
+let xNo = 256;
+let yNo = 256;
 
 const heightTab = document.getElementById("height-tab");
 const errorTab = document.getElementById("error-tab");
@@ -90,9 +101,33 @@ function parseHeader(header) {
             }
         }
     });
-    infoP.innerHTML = "Scan size: " + imageInfo[0]["Scan Size"];
-    zSens = parseFloat(info["Scanner list"]["@Sens. Zsens"].split(" ")[1]);
-    infoP.innerHTML += "\r\nZ sense: " + zSens + " nm/V";
+    if(imageInfo[0]["Scan Size"]) {
+        sizeX = parseFloat(imageInfo[0]["Scan Size"].split(" ")[0]);
+        sizeY = parseFloat(imageInfo[0]["Scan Size"].split(" ")[1]);
+        unit = imageInfo[0]["Scan Size"].split(" ")[2];
+    } else if(imageInfo[0]["Scan size"]) {
+        sizeX = parseFloat(imageInfo[0]["Scan size"].split(" ")[0]);
+        sizeY = parseFloat(imageInfo[0]["Scan size"].split(" ")[1]);
+        unit = imageInfo[0]["Scan size"].split(" ")[2];
+    }
+    zScale = parseFloat(imageInfo[0]["@2:Z scale"].split(" ")[5]);
+    errorScale = parseFloat(imageInfo[1]["@2:Z scale"].split(" ")[5]);
+    let zSenseParamName = "@" + imageInfo[0]["@2:Z scale"].split("[")[1].split("]")[0];
+    for(const params in info) {
+        if(info[params][zSenseParamName]) {
+            zSense = parseFloat(info[params][zSenseParamName].split(" ")[1]);
+        }
+    }
+    let errorParamName = "@" + imageInfo[1]["@2:Z scale"].split("[")[1].split("]")[0];
+    for(const params in info) {
+        if(info[params][errorParamName]) {
+            errorSense = parseFloat(info[params][errorParamName].split(" ")[1]);
+        }
+    }
+    xNo = imageInfo[0]["Samps/line"];
+    yNo = imageInfo[0]["Number of lines"];
+    console.log(info);
+    console.log(imageInfo);   
 }
 
 function parseData(rawData) {
@@ -118,7 +153,8 @@ function parseData(rawData) {
             }
         }
     }
-    infoP.innerHTML += "\r\nZ range: " + dataRanges[0][0] + " " + dataRanges[0][1];
+    zRange = Math.max(dataRanges[0][1], -dataRanges[0][0]);
+    errorRange = Math.max(dataRanges[1][1], -dataRanges[1][0]);
 }
 
 function readAfm(file) {
@@ -165,7 +201,11 @@ function printData() {
     for(let y = 0; y < h; y++) {
         for(let x = 0; x < w; x++) {
             let index = y * w + x;
-            let lineText = "" + (data[0][index]) + "\t" + data[1][index] + "\t" + data[2][index] + "\t" + x + "\t" + y + "\n";
+            let lineText = "" + (data[0][index]*zScale*zSense/zRange/2) 
+                + "\t" + (data[1][index]*errorScale*errorSense/errorRange/2) 
+                + "\t" + (data[2][index]*360/65536) 
+                + "\t" + (x*sizeX/xNo) 
+                + "\t" + (y*sizeY/yNo) + "\n";
             dataText += lineText;
         }
     }
