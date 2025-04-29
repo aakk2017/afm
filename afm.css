@@ -80,6 +80,7 @@ body {
 }
 .image-container {
     height: 89vh;
+    padding: 5%;
     box-sizing: border-box;
     background-color: var(--image-panel-color);
     border: 1px solid black;
@@ -87,11 +88,7 @@ body {
     border-radius: 0 0 1vh 1vh;
 }
 .afm-image {
-    opacity: 0;
-    transition: all 0.3s;
-}
-.afm-image[on-view] {
-    opacity: 1;
+    transform-origin: top left;
 }
 
 .right-column {

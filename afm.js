@@ -48,7 +48,7 @@ function handleClickOnTab(e) {
         onView = targetView;
         tabs[onView].setAttribute("on-view", "");
         if(loaded) {
-            plotImage();
+            plotImage(onView);
         }
     }
 }
@@ -126,8 +126,6 @@ function parseHeader(header) {
     }
     xNo = imageInfo[0]["Samps/line"];
     yNo = imageInfo[0]["Number of lines"];
-    console.log(info);
-    console.log(imageInfo);   
 }
 
 function parseData(rawData) {
@@ -165,7 +163,7 @@ function readAfm(file) {
         parseHeader(header);
         const rawData = reader.result.slice(40960, length);
         parseData(rawData);
-        plotImage();
+        plotImage(onView);
         printData();
         loaded = true;
     });
@@ -180,19 +178,24 @@ function viewFile(){
     readAfm(file);
 }
 
-function plotImage() {
+function plotImage(i) {
     const afmImage = document.getElementById("afm-image");
     const ctx = afmImage.getContext("2d", {
         "willReadFrequently": true
     });
     afmImage.width = imageInfo[0]["Samps/line"];
     afmImage.height = imageInfo[0]["Number of lines"];
-    const imageData = ctx.getImageData(0, 0, afmImage.width, afmImage.height);
-    const imageColors = imageData.data;
-    imageColors.forEach((p, i, c) => {
-        c[i] = 255;
-    });
-    ctx.putImageData(imageData, 0, 0);
+    let saturation;
+    for(let y = 0; y < yNo; y++) {
+        for(let x = 0; x < xNo; x++) {
+            saturation = (data[i][y*xNo+x] - dataRanges[i][0]) / (dataRanges[i][1] - dataRanges[i][0]) * 100;
+            ctx.fillStyle = `hsl(60, ${saturation}%, 50%)`;
+            ctx.fillRect(x, yNo - y - 1, 1, 1);
+        }
+    }
+    const imgContainerWidth = afmImage.parentElement.clientWidth;
+    const scale = imgContainerWidth * 0.9 / Math.max(xNo, yNo);
+    afmImage.style.transform = `scale(${scale}, ${scale})`;
 }
 function printData() {
     dataText = "Z\tError\tPhase\tX\tY\n";
@@ -202,7 +205,7 @@ function printData() {
         for(let x = 0; x < w; x++) {
             let index = y * w + x;
             let lineText = "" + (data[0][index]*zScale*zSense/zRange/2) 
-                + "\t" + (data[1][index]*errorScale*errorSense/errorRange/2) 
+                + "\t" + (data[1][index]*errorScale*errorSense/65536) 
                 + "\t" + (data[2][index]*360/65536) 
                 + "\t" + (x*sizeX/xNo) 
                 + "\t" + (y*sizeY/yNo) + "\n";
