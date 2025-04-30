@@ -188,11 +188,14 @@ function plotImage(i) {
     });
     afmImage.width = imageInfo[0]["Samps/line"];
     afmImage.height = imageInfo[0]["Number of lines"];
-    let saturation;
+    let percentage, hue, saturation, lightness;
     for(let y = 0; y < yNo; y++) {
         for(let x = 0; x < xNo; x++) {
-            saturation = (data[i][y*xNo+x] - dataRanges[i][0]) / (dataRanges[i][1] - dataRanges[i][0]) * 100;
-            ctx.fillStyle = `hsl(60, ${saturation}%, ${saturation}%)`;
+            percentage = (data[i][y*xNo+x] - dataRanges[i][0]) / (dataRanges[i][1] - dataRanges[i][0]);
+            hue = percentage * 90;
+            saturation = 75;
+            lightness = percentage * 100;
+            ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
             ctx.fillRect(x, yNo - y - 1, 1, 1);
         }
     }

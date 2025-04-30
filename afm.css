@@ -1,6 +1,7 @@
 /* reset styles */
 * {
     margin: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* clear float */
@@ -13,7 +14,7 @@
 /* define key colors */
 :root {
     --image-panel-color: #eee;
-    --tab-area-height: 2.5vh;
+    --tab-area-height: 3vh;
 }
 
 body {
