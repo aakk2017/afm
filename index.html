@@ -10,14 +10,17 @@
     <div class="container">
         <div class="left-column">
             <div class="input-area">
-                <div class="input-container">
-                    <input 
+                <!-- <div class="input-container">
+                    
+                </div> -->
+                <label for="open-file" class="button" id="open-file-label">Select file</label>
+                <input 
                     type="file" 
                     id="open-file" 
                     name="open-file" 
                     onchange="viewFile()" />
-                </div>
-                <a id="save-data">Save data</a>
+                <a class="button" id="save-data">Save data</a>
+                <div id="file-name"></div>
             </div>
             <div class="image-area">
                 <div class="image-panel">

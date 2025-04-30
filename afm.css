@@ -39,13 +39,14 @@ body {
 }
 .input-container {
     height: 4vh;
-    width: 60vh;
+    /* width: 60vh; */
     margin: auto;
 }
-#save-data {
+.button {
     display: block;
     height: 3vh;
-    margin: auto 0;
+    margin: auto 1vh;
+    border: 1px solid #47a;
     border-radius: 0.5vh;
     background: #69c;
     color: #fff;
@@ -53,6 +54,21 @@ body {
     line-height: 3vh;
     font-size: 2vh;
     text-decoration: none;
+}
+.button:hover {
+    background-color: #47a;
+}
+#open-file {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+#file-name {
+    height: 3vh;
+    margin: auto 1vh;
+    padding: 0 1vh;
+    line-height: 3vh;
+    font-size: 2vh;
 }
 .image-area {
     height: 94vh;
@@ -77,6 +93,7 @@ body {
     text-align: center;
     font-size: 2vh;
     user-select: none;
+    transition: all 0.25s;
 }
 #error-tab {
     border-left: 1px solid black;

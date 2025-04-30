@@ -24,6 +24,7 @@ let unit = "~m";
 let xNo = 256;
 let yNo = 256;
 
+const fileNameDiv = document.getElementById("file-name");
 const heightTab = document.getElementById("height-tab");
 const errorTab = document.getElementById("error-tab");
 const phaseTab = document.getElementById("phase-tab");
@@ -68,6 +69,7 @@ function initializePage() {
     dataRanges = [[0, 0], [0, 0], [0, 0]];
     infoP.innerHTML = "";
     fileName = '';
+    fileNameDiv.innerHTML = '';
 }
 
 function parseHeader(header) {
@@ -178,6 +180,7 @@ function viewFile(){
     const file = document.getElementById("open-file").files[0];
     initializePage();
     fileName = file.name;
+    fileNameDiv.innerHTML = fileName;
     readAfm(file);
 }
 
