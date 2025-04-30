@@ -11,6 +11,7 @@ let data = [];
 let dataRanges = [[0, 0], [0, 0], [0, 0]];
 let loaded = false;
 
+let fileName = '';
 let zSense = 0;
 let zScale = 0;
 let zRange = 32767;
@@ -66,6 +67,7 @@ function initializePage() {
     data = [];
     dataRanges = [[0, 0], [0, 0], [0, 0]];
     infoP.innerHTML = "";
+    fileName = '';
 }
 
 function parseHeader(header) {
@@ -164,7 +166,7 @@ function readAfm(file) {
         const rawData = reader.result.slice(40960, length);
         parseData(rawData);
         plotImage(onView);
-        printData();
+        // printData();
         loaded = true;
     });
     if(file) {
@@ -175,6 +177,7 @@ function readAfm(file) {
 function viewFile(){
     const file = document.getElementById("open-file").files[0];
     initializePage();
+    fileName = file.name;
     readAfm(file);
 }
 
@@ -189,7 +192,7 @@ function plotImage(i) {
     for(let y = 0; y < yNo; y++) {
         for(let x = 0; x < xNo; x++) {
             saturation = (data[i][y*xNo+x] - dataRanges[i][0]) / (dataRanges[i][1] - dataRanges[i][0]) * 100;
-            ctx.fillStyle = `hsl(60, ${saturation}%, 50%)`;
+            ctx.fillStyle = `hsl(60, ${saturation}%, ${saturation}%)`;
             ctx.fillRect(x, yNo - y - 1, 1, 1);
         }
     }
@@ -212,6 +215,13 @@ function printData() {
             dataText += lineText;
         }
     }
-    dataArea.innerHTML = dataText;
+    const a = document.createElement('a');
+    a.setAttribute('href', URL.createObjectURL(new Blob([dataText], {type: 'text/plain'})));
+    a.setAttribute('download', fileName + '.dat');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // dataArea.innerHTML = dataText;
 }
 
