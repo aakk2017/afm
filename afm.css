@@ -31,22 +31,31 @@ body {
 .left-column {
     height: 100vh;
     width: 90vh;
-    /* background-color: bisque; */
 }
 .input-area {
     height: 6vh;
     display: flex;
-    /* background-color: chartreuse; */
 }
 .input-container {
     height: 4vh;
     width: 60vh;
     margin: auto;
 }
+#save-data {
+    display: block;
+    height: 3vh;
+    margin: auto 0;
+    border-radius: 0.5vh;
+    background: #69c;
+    color: #fff;
+    padding: 0 1vh;
+    line-height: 3vh;
+    font-size: 2vh;
+    text-decoration: none;
+}
 .image-area {
     height: 94vh;
     display: flex;
-    /* background-color: darkgoldenrod; */
 }
 .image-panel {
     height: 93vh;
@@ -56,7 +65,6 @@ body {
 .tab-area {
     height: var(--tab-area-height);
     display: flex;
-    /* background-color: indianred; */
 }
 .tab {
     height: var(--tab-area-height);
@@ -94,7 +102,6 @@ body {
 .right-column {
     height: 100vh;
     width: 87vh;
-    /* background-color: fuchsia; */
 }
 .info-area {
     height: 5vh;

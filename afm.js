@@ -166,7 +166,7 @@ function readAfm(file) {
         const rawData = reader.result.slice(40960, length);
         parseData(rawData);
         plotImage(onView);
-        // printData();
+        printData();
         loaded = true;
     });
     if(file) {
@@ -215,13 +215,8 @@ function printData() {
             dataText += lineText;
         }
     }
-    const a = document.createElement('a');
-    a.setAttribute('href', URL.createObjectURL(new Blob([dataText], {type: 'text/plain'})));
-    a.setAttribute('download', fileName + '.dat');
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // dataArea.innerHTML = dataText;
+    const saveDataA = document.getElementById("save-data");
+    saveDataA.setAttribute('href', URL.createObjectURL(new Blob([dataText], {type: 'text/plain'})));
+    saveDataA.setAttribute('download', fileName.replaceAll('.', '_') + '.dat');
 }
 
