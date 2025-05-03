@@ -39,7 +39,6 @@ body {
 }
 .input-container {
     height: 4vh;
-    /* width: 60vh; */
     margin: auto;
 }
 .button {
@@ -56,6 +55,7 @@ body {
     text-decoration: none;
 }
 .button:hover {
+    cursor: pointer;
     background-color: #47a;
 }
 #open-file {
@@ -98,6 +98,9 @@ body {
 #error-tab {
     border-left: 1px solid black;
     border-right: 1px solid black;
+}
+.tab:hover {
+    background-color: #ddd;
 }
 .tab[on-view] {
     width: 31vh;
